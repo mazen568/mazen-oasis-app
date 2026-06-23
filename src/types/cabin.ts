@@ -1,8 +1,3 @@
-export interface Cabin {
-    id:number;
-    name:string;
-    maxCapacity:number;
-    regularPrice:number;
-    discount:number;
-    image:string;
-}
+import { Tables } from '@/types/database.types';
+
+export type Cabin = Pick<Tables<'cabins'>, 'id' | 'name' | 'max_capacity' | 'regular_price' | 'discount' | 'image'>;

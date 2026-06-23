@@ -1,22 +1,25 @@
 import { UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import {Cabin} from "@/types/cabin"
+import { Cabin } from "@/types/cabin"
 
 
-interface CabinCardProps{
-  cabin:Cabin
+interface CabinCardProps {
+  cabin: Cabin
 }
 
-function CabinCard({ cabin }:CabinCardProps) {
-  const { id, name, maxCapacity, regularPrice, discount, image } = cabin;
+function CabinCard({ cabin }: CabinCardProps) {
+  const { id, name, max_capacity, regular_price, discount, image } = cabin;
 
   return (
     <div className="flex border-primary-800 border">
-      <Image
-        src={image}
-        alt={`Cabin ${name}`}
-        className="flex-1 border-r border-primary-800"
-      />
+      
+      <div className="relative aspect-square">
+        <Image
+          src={image ?? ''} alt={`Cabin ${name}`}
+          className="flex-1 border-r border-primary-800 object-cover"
+          fill
+        />
+      </div>
 
       <div className="flex-grow">
         <div className="pt-5 pb-4 px-7 bg-primary-950">
@@ -27,22 +30,21 @@ function CabinCard({ cabin }:CabinCardProps) {
           <div className="flex gap-3 items-center mb-2">
             <UsersIcon className="h-5 w-5 text-primary-600" />
             <p className="text-lg text-primary-200">
-              For up to <span className="font-bold">{maxCapacity}</span> guests
+              For up to <span className="font-bold">{max_capacity}</span> guests
             </p>
           </div>
 
           <p className="flex gap-3 justify-end items-baseline">
-            {discount > 0 ? (
+            {discount ?? 0 > 0 ? (
               <>
                 <span className="text-3xl font-[350]">
-                  ${regularPrice - discount}
-                </span>
+                  ${(regular_price ?? 0) - (discount ?? 0)}                </span>
                 <span className="line-through font-semibold text-primary-600">
-                  ${regularPrice}
+                  ${regular_price}
                 </span>
               </>
             ) : (
-              <span className="text-3xl font-[350]">${regularPrice}</span>
+              <span className="text-3xl font-[350]">${regular_price}</span>
             )}
             <span className="text-primary-200">/ night</span>
           </p>
