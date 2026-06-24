@@ -4,10 +4,10 @@ import { eachDayOfInterval } from 'date-fns';
 import { Database } from "@/types/database.types";
 import axios from "axios";
 import { Country } from "../types/country";
+import { notFound } from "next/navigation";
 
 /////////////
 // GET
-
 export async function getCabin(id: number) {
   const { data, error } = await supabase
     .from('cabins')
@@ -15,14 +15,12 @@ export async function getCabin(id: number) {
     .eq('id', id)
     .single();
 
-
-  //  await new Promise ((res)=>setTimeout(res,2000))
-
   if (error) {
     console.error(error);
+    return null;
   }
 
-  return data as Database['public']['Tables']['cabins']['Row'];
+  return data;
 }
 
 export async function getCabinPrice(id: number) {
@@ -34,9 +32,10 @@ export async function getCabinPrice(id: number) {
 
   if (error) {
     console.error(error);
+    return null
   }
 
-  return data as Pick<Database['public']['Tables']['cabins']['Row'], 'regular_price' | 'discount'>;
+  return data
 }
 
 export const getCabins = async function () {
@@ -45,13 +44,12 @@ export const getCabins = async function () {
     .select('id, name, max_capacity, regular_price, discount, image')
     .order('name');
 
-
   if (error) {
     console.error(error);
-  throw new Error(`Cabins could not be loaded: ${error.message}`);
+    throw new Error(`Cabins could not be loaded: ${error.message}`);
   }
 
-  return data as Array<Pick<Database['public']['Tables']['cabins']['Row'], 'id' | 'name' | 'max_capacity' | 'regular_price' | 'discount' | 'image'>>;
+  return data
 };
 
 // Guests are uniquely identified by their email address
