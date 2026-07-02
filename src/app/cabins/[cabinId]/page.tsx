@@ -1,4 +1,4 @@
-import { getCabin } from "@/lib/data-service";
+import { getCabin, getCabins } from "@/lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -12,18 +12,23 @@ interface ProductPageProps {
 
 export async function generateMetadata({ params }: ProductPageProps) {
     const { cabinId } = await params;
-    const cabin= await getCabin(Number(cabinId));
+    const cabin = await getCabin(Number(cabinId));
 
     if (!cabin) {
         return {
-          title: "Cabin Not Found",
+            title: "Cabin Not Found",
         };
-      }
+    }
     return {
         title: `Cabin ${cabin.name}`
     }
 }
 
+export async function generateStaticParams() {
+    const cabins = await getCabins();
+    const ids = cabins.map(cabin => { cabinId: cabin.id.toString() });
+    return ids;
+}
 export default async function page({ params }: ProductPageProps) {
     const { cabinId } = await params;
     const cabin = await getCabin(Number(cabinId));

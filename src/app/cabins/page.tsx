@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import Spinner from "@/components/Spinner";
 
 
+// export const revalidate =0;// revalidate every 0 seconds, meaning no caching, always fetch fresh data(render this page dynamically on every request)
+export const revalidate = 3600; // revalidate every 3600 seconds, meaning cache this page(data because full route cache is revalidated when data cache is revalidated) for 3600 seconds, then fetch fresh data
 export const metadata: Metadata = {
     title: "Cabins"
 }
