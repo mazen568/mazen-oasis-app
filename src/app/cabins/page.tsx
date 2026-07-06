@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import CabinList from "@/components/CabinList";
 import { Suspense } from "react";
 import Spinner from "@/components/Spinner";
+import Filter from "@/components/Filter";
 
 
 // export const revalidate =0;// revalidate every 0 seconds, meaning no caching, always fetch fresh data(render this page dynamically on every request)
@@ -9,9 +10,16 @@ export const revalidate = 3600; // revalidate every 3600 seconds, meaning cache 
 export const metadata: Metadata = {
     title: "Cabins"
 }
-export default function page() {
 
 
+interface props {
+    searchParams: Promise<{ capacity: string }>
+}
+export default async function page({ searchParams }: props) {
+
+    let { capacity } = await searchParams;
+    capacity = capacity ?? "all";
+    console.log("capacity: ",capacity)
     return (
         <div>
             <h1 className="text-4xl mb-5 text-accent-400 font-medium">
@@ -25,9 +33,11 @@ export default function page() {
                 away from home. The perfect spot for a peaceful, calm vacation. Welcome
                 to paradise.
             </p>
-
+            <div className="mb-5 flex justify-end">
+                <Filter />
+            </div>
             <Suspense fallback={<Spinner />}>
-                <CabinList />
+                <CabinList capacity={capacity}/>
             </Suspense>
         </div>
     );
