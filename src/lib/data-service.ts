@@ -145,17 +145,20 @@ export async function getSettings(): Promise<Database['public']['Tables']['setti
   return data;
 }
 
-export async function getCountries() {
+export async function getCountries(): Promise<Country[]> {
   try {
-    const res = await axios.get<Country[]>(
-      'https://restcountries.com/v2/all?fields=name,flag'
+    const res = await fetch(
+      "https://countriesnow.space/api/v0.1/countries/flag/images",
     );
-
-    return res.data;
-  } catch {
-    throw new Error('Could not fetch countries');
+    if (!res.ok) throw new Error("Could not fetch countries");
+    const result = await res.json();
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Could not fetch countries");
   }
 }
+
 
 /////////////
 // CREATE
