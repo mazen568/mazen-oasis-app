@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google"
+import { ReservationProvider } from "@/components/ReservationContext";
 export const metadata: Metadata = {
   title: {
     template: "%s | The Wild Oasis",
@@ -25,7 +26,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <Header />
       <div className=" flex-1 px-8 py-12 grid">
         <main className="max-w-7xl mx-auto w-full">
-          {children}
+         <ReservationProvider>
+         {children}
+         </ReservationProvider>
         </main>
       </div>
 

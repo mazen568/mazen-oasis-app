@@ -3,6 +3,7 @@ import CabinList from "@/components/CabinList";
 import { Suspense } from "react";
 import Spinner from "@/components/Spinner";
 import Filter from "@/components/Filter";
+import ReservationReminder from "@/components/ReservationReminder";
 
 
 // export const revalidate =0;// revalidate every 0 seconds, meaning no caching, always fetch fresh data(render this page dynamically on every request)
@@ -38,6 +39,7 @@ export default async function page({ searchParams }: props) {
             </div>
             <Suspense fallback={<Spinner />}>
                 <CabinList capacity={capacity}/>
+                <ReservationReminder />
             </Suspense>
         </div>
     );
