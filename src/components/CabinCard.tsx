@@ -1,6 +1,6 @@
 import { UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { Cabin } from "@/types/cabin"
+import type { Cabin } from "@/types/types";
 
 
 interface CabinCardProps {

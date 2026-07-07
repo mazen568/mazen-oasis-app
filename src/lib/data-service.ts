@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { supabase } from "./supabase";
-import { eachDayOfInterval } from 'date-fns';
 import { Database } from "@/types/database.types";
-import axios from "axios";
-import { Country } from "../types/country";
-import { notFound } from "next/navigation";
+import { eachDayOfInterval } from 'date-fns';
+import { Country } from "../types/types";
+import { supabase } from "./supabase";
 
 /////////////
 // GET
-export async function getCabin(id: number) {
+export async function getCabin(id: number)  {
   const { data, error } = await supabase
     .from('cabins')
     .select('*')
@@ -41,7 +39,7 @@ export async function getCabinPrice(id: number) {
 export const getCabins = async function () {
   const { data, error } = await supabase
     .from('cabins')
-    .select('id, name, max_capacity, regular_price, discount, image')
+    .select('*')
     .order('name');
 
   if (error) {

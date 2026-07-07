@@ -1,8 +1,10 @@
+import Cabin from "@/components/Cabin";
+import Reservation from "@/components/Reservation";
+import Spinner from "@/components/Spinner";
 import { getCabin, getCabins } from "@/lib/data-service";
-import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import TextExpander from "@/components/TextExpander";
+import { Suspense } from "react";
+
 interface ProductPageProps {
     params: Promise<{ cabinId: string }>
 }
@@ -27,7 +29,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
 
 export async function generateStaticParams() {
     const cabins = await getCabins();
-    const ids = cabins.map(cabin => { cabinId: cabin.id.toString() });
+    const ids = cabins.map((cabin) => ({ cabinId: cabin.id.toString() }));
     return ids;
 }
 export default async function page({ params }: ProductPageProps) {
@@ -36,56 +38,20 @@ export default async function page({ params }: ProductPageProps) {
 
     if (!cabin)
         notFound();
-    const { image, name, description, max_capacity } = cabin;
 
 
     return (
-        <div className="max-w-6xl mx-auto mt-8">
-            <div className="grid grid-cols-[3fr_4fr] gap-20 border border-primary-800 py-3 px-10 mb-24">
-                <div className="relative scale-[1.15] -translate-x-3">
-                    <Image src={image ?? ''} alt={`Cabin ${name}`} fill className="object-cover" />
-                </div>
+        <div className="mx-auto mt-8 max-w-6xl px-4 sm:px-6 lg:px-8">
+            <Cabin cabin={cabin} />
 
-                <div>
-                    <h3 className="text-accent-100 font-black text-7xl mb-5 translate-x-[-254px] bg-primary-950 p-6 pb-1 w-[150%]">
-                        Cabin {name}
-                    </h3>
-
-                    <p className="text-lg text-primary-300 mb-10">
-                        <TextExpander>
-                            {description ?? ""}
-                        </TextExpander>
-                    </p>
-
-                    <ul className="flex flex-col gap-4 mb-7">
-                        <li className="flex gap-3 items-center">
-                            <UsersIcon className="h-5 w-5 text-primary-600" />
-                            <span className="text-lg">
-                                For up to <span className="font-bold">{max_capacity}</span>{" "}
-                                guests
-                            </span>
-                        </li>
-                        <li className="flex gap-3 items-center">
-                            <MapPinIcon className="h-5 w-5 text-primary-600" />
-                            <span className="text-lg">
-                                Located in the heart of the{" "}
-                                <span className="font-bold">Dolomites</span> (Italy)
-                            </span>
-                        </li>
-                        <li className="flex gap-3 items-center">
-                            <EyeSlashIcon className="h-5 w-5 text-primary-600" />
-                            <span className="text-lg">
-                                Privacy <span className="font-bold">100%</span> guaranteed
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div>
-                <h2 className="text-5xl font-semibold text-center">
-                    Reserve today. Pay on arrival.
+            <div className="mt-16">
+                <h2 className="text-center text-4xl font-semibold tracking-tight sm:text-5xl text-accent-400">
+                    Reserve {cabin.name} today. Pay on arrival.
                 </h2>
+
+                <Suspense fallback={<Spinner />}>
+                    <Reservation cabin={cabin} />
+                </Suspense>
             </div>
         </div>
     )
