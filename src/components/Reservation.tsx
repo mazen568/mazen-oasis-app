@@ -1,7 +1,7 @@
 import { getBookedDatesByCabinId, getSettings } from "@/lib/data-service";
 import DateSelector from "./DateSelector";
 import ReservationForm from "./ReservationForm";
-import type { Cabin } from "@/types/types";
+import type { Cabin } from "@/lib/types";
 
 interface ReservationProps {
     cabin: Cabin;

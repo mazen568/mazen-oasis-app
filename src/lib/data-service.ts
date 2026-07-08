@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Database } from "@/types/database.types";
+import { Database } from "@/lib/database.types";
 import { eachDayOfInterval } from 'date-fns';
-import { Country } from "../types/types";
+import { Country } from "../lib/types";
 import { supabase } from "./supabase";
 
 /////////////

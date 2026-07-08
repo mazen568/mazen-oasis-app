@@ -1,4 +1,4 @@
-import { Database } from "./database.types";
+import { Database } from "../lib/database.types";
 
 export type Booking = Database['public']['Tables']['bookings']['Row']
 

@@ -3,7 +3,7 @@
 import { isWithinInterval } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import type { DateRange } from "react-day-picker";
-import type { Cabin, Settings } from "@/types/types";
+import type { Cabin, Settings } from "@/lib/types";
 import "react-day-picker/dist/style.css";
 import { useState } from "react";
 import { useReservation } from "./ReservationContext";

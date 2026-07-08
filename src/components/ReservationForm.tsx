@@ -1,5 +1,5 @@
 'use client';
-import { Cabin } from "@/types/types";
+import { Cabin } from "@/lib/types";
 import { useReservation } from "./ReservationContext";
 
 interface ReservationFormProps {

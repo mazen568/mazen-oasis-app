@@ -1,5 +1,5 @@
 import ReservationCard from "@/components/ReservationCard";
-import { Booking } from "@/types/booking";
+import { Booking } from "@/lib/booking";
 
 export default function Page() {
   // CHANGE

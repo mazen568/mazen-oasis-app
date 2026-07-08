@@ -1,7 +1,7 @@
 import TextExpander from "@/components/TextExpander";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import type { Cabin } from "@/types/types";
+import type { Cabin } from "@/lib/types";
 
 interface CabinProps {
     cabin: Cabin;
