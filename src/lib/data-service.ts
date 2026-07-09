@@ -2,7 +2,7 @@
 import { Database } from "@/lib/database.types";
 import { eachDayOfInterval } from 'date-fns';
 import { Country } from "../lib/types";
-import { supabase } from "./supabase";
+import { supabase, supabaseAdmin } from "./supabase";
 
 /////////////
 // GET
@@ -162,7 +162,7 @@ export async function getCountries(): Promise<Country[]> {
 // CREATE
 
 export async function createGuest(newGuest: Database['public']['Tables']['guests']['Insert']) {
-  const { data, error } = await supabase.from('guests').insert([newGuest]);
+  const { data, error } = await supabaseAdmin.from('guests').insert([newGuest]);
 
   if (error) {
     console.error(error);
