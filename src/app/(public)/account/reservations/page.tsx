@@ -1,9 +1,14 @@
 import ReservationCard from "@/components/ReservationCard";
-import { Booking } from "@/lib/booking";
+import { auth } from "@/lib/auth";
+import { getBookings } from "@/lib/data-service";
 
-export default function Page() {
+export default async function Page() {
   // CHANGE
-  const bookings:Booking[] = [];
+  const session = await auth();
+
+  if(!session?.user?.id)
+    throw new Error("Not authenticated");
+  const bookings = await getBookings(Number(session?.user?.id));
 
   return (
     <div>

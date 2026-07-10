@@ -81,7 +81,7 @@ export async function getBookings(guestId: number) {
   const { data, error } = await supabase
     .from('bookings')
     .select(
-      'id, created_at, start_date, end_date, number_nights, number_guests, total_price, guest_id, cabin_id, cabins(name, image)'
+      '*'
     )
     .eq('guest_id', guestId)
     .order('start_date');
@@ -91,12 +91,7 @@ export async function getBookings(guestId: number) {
     throw new Error('Bookings could not get loaded');
   }
 
-  return data as Array<
-    Pick<
-      Database['public']['Tables']['bookings']['Row'],
-      'id' | 'created_at' | 'start_date' | 'end_date' | 'number_nights' | 'number_guests' | 'total_price' | 'guest_id' | 'cabin_id'
-    > & { cabins: Pick<Database['public']['Tables']['cabins']['Row'], 'name' | 'image'> }
-  >;
+  return data;
 }
 
 export async function getBookedDatesByCabinId(cabinId: number): Promise<Date[]> {
