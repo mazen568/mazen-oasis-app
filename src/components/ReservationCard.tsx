@@ -6,6 +6,7 @@ import DeleteReservation from './DeleteReservation';
 import { Booking } from '@/lib/types'
 import { getCabin } from '@/lib/data-service';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const formatDistanceFromNow = (dateStr: string) =>
   formatDistance(parseISO(dateStr), new Date(), {
@@ -47,10 +48,11 @@ async function ReservationCard({ booking }: ReservationCardProps) {
   return (
     <div className='flex border border-primary-800'>
       <div className='relative h-32 aspect-square'>
-        <img
+        <Image
           src={image??""}
           alt={`Cabin ${name}`}
           className='object-cover border-r border-primary-800'
+          fill
         />
       </div>
 
