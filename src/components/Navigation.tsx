@@ -4,7 +4,7 @@ import Link from "next/link"
 export default async function Navigation() {
 
   const session = await auth();
-  console.log("NAVIGATION SESSION: ",session);
+  // console.log("NAVIGATION SESSION: ",session);
 
   return (
     <nav className="z-10 text-xl">

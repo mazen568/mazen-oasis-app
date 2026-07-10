@@ -1,10 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
 import SelectCountry from "@/components/SelectCountry";
 import UpdateProfileForm from "@/components/UpdateProfileForm";
+import { auth } from "@/lib/auth";
+import { getGuest } from "@/lib/data-service";
 
-export default function Page() {
+export default async function Page() {
   // CHANGE
-  const nationality = "portugal";
+  // const nationality = "portugal";
+  const session = await auth();
+  if (!session?.user?.email) {
+    throw new Error("Not authenticated");
+    //caught by the nearest error.ts file
+  }
+  const guest = await getGuest(session?.user?.email)
+  console.log(guest);
+  
+
+  if (!guest) {
+    throw new Error("Guest not found");
+     //caught by the nearest error.ts file
+  }
 
 
   return (
@@ -18,12 +33,12 @@ export default function Page() {
         faster and smoother. See you soon!
       </p>
 
-      <UpdateProfileForm>
+      <UpdateProfileForm guest={guest}>
         <SelectCountry
           name="nationality"
           id="nationality"
           className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
-          defaultCountry={nationality}
+          defaultCountry={guest.nationality ?? ""}
         />
       </UpdateProfileForm>
     </div>

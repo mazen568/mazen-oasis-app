@@ -12,12 +12,12 @@ export const authConfig: NextAuthConfig = {
     ],
     callbacks: {
         authorized({ auth, request }) {
-            console.log("AUTHORIZED:", auth);
+            // console.log("AUTHORIZED:", auth);
 
             return !!auth;
         },
         async signIn({ user, account, profile }) {
-            console.log("SIGN IN CALLBACK:", user);
+            // console.log("SIGN IN CALLBACK:", user);
 
             try {
                 if (!user.email)
