@@ -3,15 +3,15 @@
 
 import { auth, signIn, signOut } from "@/lib/auth"
 import { revalidatePath } from "next/cache";
-import { updateGuest } from "./data-service";
+import { deleteBooking, getBooking, updateGuest } from "./data-service";
 
 export async function updateGuestProfile(formData: FormData) {
     const session = await auth();
     if (!session?.user?.id)
         throw new Error("You must be logged in to update your profile");
 
-    const nationalID = formData.get("nationalID") as string;
-    const nationalityValue = formData.get("nationality") as string;
+    const nationalID = String(formData.get("nationalID"));
+    const nationalityValue = String(formData.get("nationality"));
     const [nationality, countryFlag] = nationalityValue.split("%");
 
     const regex = /^[a-zA-Z0-9]{6,12}$/;
@@ -27,6 +27,23 @@ export async function updateGuestProfile(formData: FormData) {
     await updateGuest(Number(session.user.id), newData);
 
     revalidatePath("/account/profile");
+}
+
+export async function deleteReservation(bookingId: number) {
+    const session = await auth();
+    if (!session?.user?.id)
+        throw new Error("You must be logged in to delete a reservation");
+
+    const booking = await getBooking(bookingId);
+
+    if (booking.guest_id !== Number(session.user.id))
+        throw new Error("You are not allowed to delete this reservation");
+    //copy curl from the browser and paste it into the cmd(without this if check anyone will be able to delete this reservation not just the reservation owner)
+
+    await deleteBooking(bookingId);
+
+
+    revalidatePath("/account/reservations");
 }
 
 export async function signInAction() {

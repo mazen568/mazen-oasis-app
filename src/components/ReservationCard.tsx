@@ -20,13 +20,11 @@ interface ReservationCardProps {
 async function ReservationCard({ booking }: ReservationCardProps) {
   const {
     id,
-    guest_id: guestId,
     start_date: startDate,
     end_date: endDate,
     number_nights: numNights,
     total_price: totalPrice,
     number_guests: numGuests,
-    status,
     created_at,
     cabin_id
 

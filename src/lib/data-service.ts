@@ -223,7 +223,12 @@ export async function updateBooking(id: number, updatedFields: Database['public'
 // DELETE
 
 export async function deleteBooking(id: number) {
-  const { data, error } = await supabase.from('bookings').delete().eq('id', id);
+  const { data, error } = await supabaseAdmin
+    .from('bookings')
+    .delete()
+    .eq('id', id)
+    .select()
+    .single();
 
   if (error) {
     console.error(error);

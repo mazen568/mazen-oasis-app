@@ -5,8 +5,6 @@ import { auth } from "@/lib/auth";
 import { getGuest } from "@/lib/data-service";
 
 export default async function Page() {
-  // CHANGE
-  // const nationality = "portugal";
   const session = await auth();
   if (!session?.user?.email) {
     throw new Error("Not authenticated");

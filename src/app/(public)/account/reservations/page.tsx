@@ -1,14 +1,8 @@
-import ReservationCard from "@/components/ReservationCard";
-import { auth } from "@/lib/auth";
-import { getBookings } from "@/lib/data-service";
-
+import ReservationList from "@/components/ReservationList";
+import Spinner from "@/components/Spinner";
+import { Suspense } from "react";
 export default async function Page() {
-  // CHANGE
-  const session = await auth();
 
-  if(!session?.user?.id)
-    throw new Error("Not authenticated");
-  const bookings = await getBookings(Number(session?.user?.id));
 
   return (
     <div>
@@ -16,20 +10,13 @@ export default async function Page() {
         Your reservations
       </h2>
 
-      {bookings.length === 0 ? (
-        <p className="text-lg">
-          You have no reservations yet. Check out our{" "}
-          <a className="underline text-accent-500" href="/cabins">
-            luxury cabins &rarr;
-          </a>
-        </p>
-      ) : (
-        <ul className="space-y-6">
-          {bookings.map((booking) => (
-            <ReservationCard booking={booking} key={booking.id} />
-          ))}
-        </ul>
-      )}
+     {/* reservation list */}
+     <Suspense fallback={<div className="flex flex-col items-center">
+      <Spinner/>
+      <p>Loading Reservations....</p>
+     </div>}>
+      <ReservationList/>
+     </Suspense>
     </div>
   );
 }
