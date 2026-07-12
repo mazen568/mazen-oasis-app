@@ -12,8 +12,8 @@ function DeleteReservation({ bookingId }: { bookingId: number }) {
 
   function handleDelete() {
     setIsModalOpen(false);
-    startTransition(async () => {
-      await deleteReservation(bookingId);
+    startTransition(() => {
+      deleteReservation(bookingId);
     });
   }
 

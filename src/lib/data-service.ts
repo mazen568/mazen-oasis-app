@@ -15,7 +15,7 @@ export async function getCabin(id: number)  {
 
   if (error) {
     console.error(error);
-    return null;
+    // return null;
   }
 
   return data;
@@ -30,7 +30,7 @@ export async function getCabinPrice(id: number) {
 
   if (error) {
     console.error(error);
-    return null
+    // return null
   }
 
   return data
@@ -71,7 +71,8 @@ export async function getBooking(id: number) {
 
   if (error) {
     console.error(error);
-    throw new Error('Booking could not get loaded');
+    // throw new Error('Booking could not get loaded');
+    // return null;
   }
 
   return data as Database['public']['Tables']['bookings']['Row'];
@@ -205,7 +206,7 @@ export async function updateGuest(id: number, updatedFields: Database['public'][
 }
 
 export async function updateBooking(id: number, updatedFields: Database['public']['Tables']['bookings']['Update']) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('bookings')
     .update(updatedFields)
     .eq('id', id)

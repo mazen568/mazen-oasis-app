@@ -1,9 +1,9 @@
 'use server'
 
-
 import { auth, signIn, signOut } from "@/lib/auth"
 import { revalidatePath } from "next/cache";
-import { deleteBooking, getBooking, updateGuest } from "./data-service";
+import { deleteBooking, getBooking, updateBooking, updateGuest } from "./data-service";
+import { redirect } from "next/navigation";
 
 export async function updateGuestProfile(formData: FormData) {
     const session = await auth();
@@ -36,7 +36,7 @@ export async function deleteReservation(bookingId: number) {
 
     const booking = await getBooking(bookingId);
 
-    if (booking.guest_id !== Number(session.user.id))
+    if (booking?.guest_id !== Number(session.user.id))
         throw new Error("You are not allowed to delete this reservation");
     //copy curl from the browser and paste it into the cmd(without this if check anyone will be able to delete this reservation not just the reservation owner)
 
@@ -46,6 +46,38 @@ export async function deleteReservation(bookingId: number) {
     revalidatePath("/account/reservations");
 }
 
+
+export async function updateReservation(formData: FormData) {
+    console.log(formData);
+
+    const session = await auth();
+    if (!session?.user?.id)
+        throw new Error("You must be logged in to update a reservation");
+
+    const reservationId = Number(formData.get("reservationId"));
+    const observations = String(formData.get("observations") );
+    const numOfGuests = Number(formData.get("numGuests"));
+    const booking = await getBooking(reservationId);
+
+    if (booking?.guest_id !== Number(session.user.id))
+        throw new Error("You are not allowed to update this reservation");
+
+    const newReservationData={
+       observations,
+       number_guests:numOfGuests
+    }
+
+    await updateBooking(reservationId,newReservationData);
+    
+
+    revalidatePath(`/account/reservations/edit/${reservationId}`);
+    revalidatePath("/account/reservations");
+    redirect("/account/reservations");
+
+
+
+
+}
 export async function signInAction() {
     await signIn('google', { redirectTo: "/account" });
 }
