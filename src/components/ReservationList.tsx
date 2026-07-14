@@ -8,6 +8,9 @@ export default async function ReservationList() {
         throw new Error("Not authenticated");
     const bookings = await getBookings(Number(session?.user?.id));
 
+    console.log("hello");
+    
+
     return (
         <>
             {bookings.length === 0 ? (
