@@ -3,18 +3,24 @@ import { Cabin } from "@/lib/types";
 import { useReservation } from "./ReservationContext";
 import Image from "next/image";
 import { Session } from "next-auth";
+import { differenceInDays } from "date-fns";
 
 interface ReservationFormProps {
   cabin: Cabin,
   user: Session["user"]
 }
 function ReservationForm({ cabin,user }: ReservationFormProps) {
-  const { max_capacity: maxCapacity } = cabin;
+  const { max_capacity: maxCapacity,regular_price:regularPrice,discount } = cabin;
   const { range } = useReservation();
+
+  const startDate= range?.from;
+  const endDate= range?.to;
+  const numNights = startDate && endDate ? differenceInDays(endDate, startDate) : 0;
+  const cabinPrice = numNights & ((regularPrice ?? 0) - (discount ?? 0));
   
 
   return (
-    <div className='scale-[1.01]'>
+    <div className='h-full'>
       <div className='bg-primary-800 text-primary-300 px-16 py-2 flex justify-between items-center'>
         <p>Logged in as</p>
 
