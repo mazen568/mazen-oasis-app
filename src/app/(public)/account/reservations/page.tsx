@@ -1,22 +1,19 @@
 import ReservationList from "@/components/ReservationList";
-import Spinner from "@/components/Spinner";
-import { Suspense } from "react";
+import { auth } from "@/lib/auth";
+import { getBookings } from "@/lib/data-service";
 export default async function Page() {
+  const session = await auth();
 
+  if (!session?.user?.id)
+    throw new Error("Not authenticated");
+  const bookings = await getBookings(Number(session?.user?.id));
 
   return (
     <div>
       <h2 className="font-semibold text-2xl text-accent-400 mb-7">
         Your reservations
       </h2>
-
-     {/* reservation list */}
-     <Suspense fallback={<div className="flex flex-col items-center">
-      <Spinner/>
-      <p>Loading Reservations....</p>
-     </div>}>
-      <ReservationList/>
-     </Suspense>
+      <ReservationList bookings={bookings}/>
     </div>
   );
 }

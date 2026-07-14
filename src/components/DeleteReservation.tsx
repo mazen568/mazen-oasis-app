@@ -1,19 +1,24 @@
 'use client';
 
-import { deleteReservation } from '@/lib/actions';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import { useState, useTransition } from 'react';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 import SpinnerMini from './SpinnerMini';
 
-function DeleteReservation({ bookingId }: { bookingId: number }) {
+
+interface DeleteReservationProps{
+  bookingId: number;
+  onDelete:(bookingId:number)=>void
+
+}
+function DeleteReservation({ bookingId,onDelete }: DeleteReservationProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   function handleDelete() {
     setIsModalOpen(false);
-    startTransition(async () => {
-      await deleteReservation(bookingId);
+    startTransition(() => {
+      onDelete(bookingId);
     });
   }
 
